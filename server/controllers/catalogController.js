@@ -88,6 +88,7 @@ router.get('/:id/apply', isAuth(), preload, notOwner(), async(req, res) => {
     try {
         const offer = await req.storage.applyToOffer(req.data, req.user._id);
         await addAppliedOffers(req.user._id, req.data._id);
+        offer.category = categories.find(cat => cat[0].value == data.category)[1];
         res.json(offer);
     } catch(err) {
         res.status(err.status || 400).json({ message: err.message });
